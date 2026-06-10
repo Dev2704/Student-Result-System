@@ -38,6 +38,11 @@ function calculateAvg(scores) {
     return Math.round(total / values.length);
 }
 
+function calculatTotal(scores){
+    const total = Object.values(scores).reduce((sum,score) => sum + score, 0);
+    return total;
+}
+
 function getGrade(avg) {
     if (avg >= 90) return "A+";
     if (avg >= 80) return "A";
@@ -115,6 +120,7 @@ function printScoreBar(score) {
 }
 
 function printReportCard(student) {
+    const total = calculatTotal(student.scores);
     const avg = calculateAvg(student.scores);
     const grade = getGrade(avg);
     const remarks = getRemarks(avg);
@@ -135,6 +141,7 @@ function printReportCard(student) {
     }
      
     printDivider();
+    console.log(`  Total     :  ${total}/${TOTAL_MARKS}`);
     console.log(`  Average   :  ${avg}%`);
     console.log(`  Grade     :  ${grade}`);
     console.log(`  Remarks   :  ${remarks}`);
@@ -143,6 +150,7 @@ function printReportCard(student) {
     console.log(`  Weakest   :  ${weak.subject.toUpperCase()} (${weak.score}%)`);
     printDivider();
     console.log();
+
 }
 
 
@@ -164,3 +172,10 @@ console.log("=".repeat(44) + "\n");
 for (const student of students) {
     printReportCard(student);
 }
+
+console.log("\n Subject Toppers")
+printDivider();
+const toppers = getSubjectToppers(students);
+    for (const [subject, topper] of Object.entries(toppers)) {
+        console.log(` ${subject.toUpperCase().padEnd(12)} ${topper.name.padEnd(12)} ${topper.score}%`);
+    }
